@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">SimpleWeatherApp</string>
+
+    <!--LaunchScreen-->
+    <string name="txt_empty_cities">No Cities</string>
+    <string name="txt_add_city">Add City</string>
+    <string name="txt_allow_location_permission">Allow location permission</string>
+    <string name="txt_enable_location_service">Enable location service</string>
+    <string name="txt_try_again">Something went wrong\nTry again</string>
+    <string name="txt_change_city">Change city</string>
+</resources>

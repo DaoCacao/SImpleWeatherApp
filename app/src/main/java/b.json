@@ -1,0 +1,43 @@
+{
+  "message": "accurate",
+  "cod": "200",
+  "count": 1,
+  "list": [
+    {
+      "id": 491422,
+      "name": "Sochi",
+      "coord": {
+        "lat": 43.6,
+        "lon": 39.7303
+      },
+      "main": {
+        "temp": 10,
+        "pressure": 1018,
+        "humidity": 76,
+        "temp_min": 10,
+        "temp_max": 10
+      },
+      "dt": 1524610800,
+      "wind": {
+        "speed": 1.11,
+        "deg": 115.506
+      },
+      "sys": {
+        "country": "RU"
+      },
+      "rain": null,
+      "snow": null,
+      "clouds": {
+        "all": 0
+      },
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "Sky is Clear",
+          "icon": "01n"
+        }
+      ]
+    }
+  ]
+}

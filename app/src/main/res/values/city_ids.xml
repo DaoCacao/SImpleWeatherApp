@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="london_id">2643743</integer>
+    <integer name="paris_id">2968815</integer>
+    <integer name="tokyo_id">1850147</integer>
+    <integer name="new_york_id">5128638</integer>
+</resources>

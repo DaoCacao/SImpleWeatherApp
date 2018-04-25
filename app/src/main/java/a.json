@@ -1,0 +1,47 @@
+{
+  "message": "accurate",
+  "cod": "200",
+  "count": 5,
+  "list": [
+    {
+      "id": 2643743,
+      "name": "London",
+      "coord": {
+        "lat": 51.5073,
+        "lon": -0.1277
+      },
+      "main": {
+        "temp": 12.84,
+        "pressure": 1014.91,
+        "humidity": 85,
+        "temp_min": 12.84,
+        "temp_max": 12.84,
+        "sea_level": 1022.48,
+        "grnd_level": 1014.91
+      },
+      "dt": 1524600424,
+      "wind": {
+        "speed": 6.19,
+        "deg": 238
+      },
+      "sys": {
+        "country": "GB"
+      },
+      "rain": {
+        "3h": 0.4841
+      },
+      "snow": null,
+      "clouds": {
+        "all": 92
+      },
+      "weather": [
+        {
+          "id": 500,
+          "main": "Rain",
+          "description": "light rain",
+          "icon": "10n"
+        }
+      ]
+    }
+  ]
+}

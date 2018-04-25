@@ -8,5 +8,6 @@ public interface BaseMvp {
 
     interface Presenter {
         void onViewResume();
+        void onViewPause();
     }
 }

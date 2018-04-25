@@ -31,16 +31,14 @@ import static android.content.Context.LOCATION_SERVICE;
 
 public class AppRepositoryManager implements Repository {
 
-    public interface OnLocationChanged {
-        void onChange(Location location);
-    }
-
     private Context context;
+    private LocationManager locationManager;
     private String apiKey;
 
     @Inject
-    public AppRepositoryManager(Context context) {
+    public AppRepositoryManager(Context context, LocationManager locationManager) {
         this.context = context;
+        this.locationManager = locationManager;
         apiKey = context.getString(R.string.open_weather_app_api_key);
     }
 
@@ -48,6 +46,7 @@ public class AppRepositoryManager implements Repository {
     public Single<CityItem> getCity(int id) {
         return Single.create(emitter -> {
             String url = String.format("http://api.openweathermap.org/data/2.5/forecast?id=%s&units=metric&appid=%s", id, apiKey);
+//            String url = String.format("http://api.openweathermap.org/data/2.5/forecast/daily?id=%s&units=metric&appid=%s", id, apiKey);
             System.out.println(url);
 
             Volley.newRequestQueue(context).add(new JsonObjectRequest(
@@ -63,6 +62,7 @@ public class AppRepositoryManager implements Repository {
     public Single<CityItem> getCity(double lat, double lon) {
         return Single.create(emitter -> {
             String url = String.format("http://api.openweathermap.org/data/2.5/forecast?lat=%s&lon=%s&units=metric&APPID=%s", lat, lon, apiKey);
+//            String url = String.format("http://api.openweathermap.org/data/2.5/forecast/daily?lat=%s&lon=%s&units=metric&APPID=%s", lat, lon, apiKey);
             System.out.println(url);
 
             Volley.newRequestQueue(context).add(new JsonObjectRequest(
@@ -75,36 +75,21 @@ public class AppRepositoryManager implements Repository {
     }
 
     @Override
+    public void removeLocationListener(LocationListener locationListener) {
+        locationManager.removeUpdates(locationListener);
+    }
+
+    @Override
     @SuppressLint("MissingPermission")
-    public void requestLocation(OnLocationChanged onLocationChanged) {
+    public void requestLocation(LocationListener locationListener) {
         LocationManager locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
         List<String> providers = locationManager.getProviders(true);
         for (String provider : providers) {
             Location location = locationManager.getLastKnownLocation(provider);
             if (location == null) {
-                locationManager.requestLocationUpdates(provider, 0, 0, new LocationListener() {
-                    @Override
-                    public void onLocationChanged(Location location) {
-                        onLocationChanged.onChange(location);
-                    }
-
-                    @Override
-                    public void onStatusChanged(String s, int i, Bundle bundle) {
-
-                    }
-
-                    @Override
-                    public void onProviderEnabled(String s) {
-
-                    }
-
-                    @Override
-                    public void onProviderDisabled(String s) {
-
-                    }
-                });
+                locationManager.requestLocationUpdates(provider, 0, 0, locationListener);
             } else {
-                onLocationChanged.onChange(location);
+                locationListener.onLocationChanged(location);
                 break;
             }
         }
@@ -122,6 +107,7 @@ public class AppRepositoryManager implements Repository {
             return null;
         }
     }
+
     private CityItem parseDailyJson(JSONObject response) {
         try {
             String id = response.getJSONArray("list").getJSONObject(0).getString("id");

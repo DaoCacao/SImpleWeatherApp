@@ -1,6 +1,10 @@
 package legion.core.simpleweatherapp.city_screen;
 
 
+import android.location.Location;
+import android.location.LocationListener;
+import android.os.Bundle;
+
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -8,7 +12,7 @@ import io.reactivex.schedulers.Schedulers;
 import legion.core.simpleweatherapp.base.BasePresenter;
 import legion.core.simpleweatherapp.model.Repository;
 
-public class CityPresenter extends BasePresenter<CityMvp.View> implements CityMvp.Presenter {
+public class CityPresenter extends BasePresenter<CityMvp.View> implements CityMvp.Presenter, LocationListener {
 
     private enum State {
         OK,
@@ -29,6 +33,11 @@ public class CityPresenter extends BasePresenter<CityMvp.View> implements CityMv
     @Override
     public void onViewResume() {
         tryToLoadCity();
+    }
+
+    @Override
+    public void onViewPause() {
+        repository.removeLocationListener(this);
     }
 
     @Override
@@ -62,16 +71,41 @@ public class CityPresenter extends BasePresenter<CityMvp.View> implements CityMv
     }
 
     @Override
-    public void loadMyCity() {
+    public void onYourLocationClick() {
         currentCityId = 0;
         tryToLoadCity();
     }
 
     @Override
     public void onCityClick(int cityId) {
+        repository.removeLocationListener(this);
         currentCityId = cityId;
         tryToLoadCity();
     }
+
+
+    @Override
+    public void onLocationChanged(Location location) {
+        double lat = location.getLatitude();
+        double lon = location.getLongitude();
+        loadCity(lat, lon);
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
+    }
+
 
     private State checkState() {
         if (!getView().hasLocationPermission()) return State.NO_PERMISSION;
@@ -100,11 +134,7 @@ public class CityPresenter extends BasePresenter<CityMvp.View> implements CityMv
     }
     private void getCityData() {
         if (currentCityId == 0) {
-            repository.requestLocation(location -> {
-                double lat = location.getLatitude();
-                double lon = location.getLongitude();
-                loadCity(lat, lon);
-            });
+            repository.requestLocation(this);
         } else {
             loadCity(currentCityId);
         }

@@ -32,7 +32,7 @@ public interface CityMvp {
         void onPermissionAllow();
         void onPermissionDenied();
 
-        void loadMyCity();
+        void onYourLocationClick();
         void onCityClick(int cityId);
     }
 }

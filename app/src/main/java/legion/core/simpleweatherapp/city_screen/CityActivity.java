@@ -10,7 +10,6 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -61,6 +60,12 @@ public class CityActivity extends BaseActivity implements CityMvp.View {
     protected void onResume() {
         super.onResume();
         presenter.onViewResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        presenter.onViewPause();
     }
 
     @Override
@@ -180,7 +185,7 @@ public class CityActivity extends BaseActivity implements CityMvp.View {
                         "New York"}, (dialogInterface, i) -> {
                     switch (i) {
                         case 0:
-                            presenter.loadMyCity();
+                            presenter.onYourLocationClick();
                             break;
                         case 1:
                             presenter.onCityClick(getResources().getInteger(R.integer.london_id));
